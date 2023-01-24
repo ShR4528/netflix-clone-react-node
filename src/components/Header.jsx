@@ -1,23 +1,23 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import logo from "../assets/logo.png"
+//import logo from "../assets/logo.png"
 
 export default function Header(props) {
   const navigate = useNavigate()
   return (
-    <Container>
-      <div className="logo">
-        <img src={logo} alt="logo" />
+    <StyledHeadser>
+      <div className="flex a-center j-between">
+        {/* <img src={logo} alt="logo" /> */}
       </div>
-      <button onClick={() => navigate(props.login ? "/login" : "/sighup")}>
+      <button onClick={() => navigate(props.login ? "/login" : "/signup")}>
         {props.login ? "Log In" : "Sign Up"}
       </button>
-    </Container>
+    </StyledHeadser>
   )
 }
 
-const Container = styled.header`
+const StyledHeadser = styled.header`
   padding: 0 4rem;
   .logo {
     img {
