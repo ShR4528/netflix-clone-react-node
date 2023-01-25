@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { useState } from "react"
 import Navbar from "../components/Navbar"
@@ -8,14 +8,29 @@ import MovieLogo from "../assets/homeTitle.webp"
 //import { onAuthStateChanged } from "firebase/auth";
 //import { firebaseAuth } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom"
-//import { useSelector, useDispatch } from "react-redux";
-//import { fetchMovies, getGenres } from "../store";
+import { useDispatch, useSelector } from "react-redux"
+import { fetchMovies, getGenres } from "../store"
 import { FaPlay } from "react-icons/fa"
 import { AiOutlineInfoCircle } from "react-icons/ai"
 
 export default function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false)
+
+  const genres = useSelector((state) => state.netflix.genres)
   const navigate = useNavigate()
+  const genresLoaded = useSelector((state) => state.netflix.genresLoaded)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getGenres())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (genresLoaded) {
+      dispatch(fetchMovies({ genres, type: "all" }))
+    }
+  }, [genresLoaded])
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true)
