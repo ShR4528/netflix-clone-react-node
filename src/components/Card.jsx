@@ -11,7 +11,7 @@ import video from "../assets/video.mp4"
 
 export default React.memo(function Card({ movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false)
-  const [email, setEmail] = useState(undefined)
+  const [email] = useState(undefined)
   const navigate = useNavigate()
 
   const addToList = async () => {
