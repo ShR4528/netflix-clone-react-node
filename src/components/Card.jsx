@@ -6,13 +6,21 @@ import { AiOutlinePlus } from "react-icons/ai"
 import axios from "axios"
 import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri"
 import { BiChevronDown } from "react-icons/bi"
+import { onAuthStateChanged } from "firebase/auth"
+import { firebaseAuth } from "../utils/firebase-config"
 import { BsCheck } from "react-icons/bs"
 import video from "../assets/video.mp4"
 
 export default React.memo(function Card({ movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false)
-  const [email] = useState(undefined)
+  const [email, setEmail] = useState(undefined)
   const navigate = useNavigate()
+
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) {
+      setEmail(currentUser.email)
+    } else navigate("/login")
+  })
 
   const addToList = async () => {
     try {
