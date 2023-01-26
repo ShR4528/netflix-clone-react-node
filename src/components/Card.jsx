@@ -3,14 +3,27 @@ import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { IoPlayCircleSharp } from "react-icons/io5"
 import { AiOutlinePlus } from "react-icons/ai"
+import axios from "axios"
 import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri"
 import { BiChevronDown } from "react-icons/bi"
 import { BsCheck } from "react-icons/bs"
 import video from "../assets/video.mp4"
 
-function Card({ movieData, isLiked = false }) {
+export default React.memo(function Card({ movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false)
+  const [email, setEmail] = useState(undefined)
   const navigate = useNavigate()
+
+  const addToList = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/user/add", {
+        email,
+        data: movieData,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Container
       onMouseEnter={() => setIsHovered(true)}
@@ -52,7 +65,7 @@ function Card({ movieData, isLiked = false }) {
                 {isLiked ? (
                   <BsCheck title="Remove From List" />
                 ) : (
-                  <AiOutlinePlus title="Add to my list" onClick={""} />
+                  <AiOutlinePlus title="Add to my list" onClick={addToList} />
                 )}
               </div>
               <div className="info">
@@ -61,8 +74,8 @@ function Card({ movieData, isLiked = false }) {
             </div>
             <div className="genres flex">
               <ul className="flex">
-                {movieData.genres.map((genre) => (
-                  <li>{genre}</li>
+                {movieData.genres.map((genre, index) => (
+                  <li key={index}>{genre}</li>
                 ))}
               </ul>
             </div>
@@ -71,7 +84,7 @@ function Card({ movieData, isLiked = false }) {
       )}
     </Container>
   )
-}
+})
 
 const Container = styled.div`
   max-width: 230px;
@@ -149,5 +162,3 @@ const Container = styled.div`
     }
   }
 `
-
-export default Card

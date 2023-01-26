@@ -15,21 +15,18 @@ import Slider from "../components/Slider"
 export default function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false)
   const movies = useSelector((state) => state.netflix.movies)
-  const genres = useSelector((state) => state.netflix.genres)
-  const navigate = useNavigate()
   const genresLoaded = useSelector((state) => state.netflix.genresLoaded)
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getGenres())
-  }, [dispatch])
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getGenres])
 
   useEffect(() => {
-    if (genresLoaded) {
-      dispatch(fetchMovies({ genres, type: "all" }))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (genresLoaded) dispatch(fetchMovies({ type: "all" }))
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [genresLoaded])
 
   window.onscroll = () => {
