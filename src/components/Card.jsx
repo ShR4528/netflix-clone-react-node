@@ -36,7 +36,6 @@ export default React.memo(function Card({ movieData, isLiked = false }) {
     <Container
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => navigate("/player")}
     >
       <img
         src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
