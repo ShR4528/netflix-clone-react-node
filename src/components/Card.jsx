@@ -10,11 +10,14 @@ import { onAuthStateChanged } from "firebase/auth"
 import { firebaseAuth } from "../utils/firebase-config"
 import { BsCheck } from "react-icons/bs"
 import video from "../assets/video.mp4"
+import { removeMovieFromLiked } from "../store"
+import { useDispatch } from "react-redux"
 
 export default React.memo(function Card({ movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false)
   const [email, setEmail] = useState(undefined)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   onAuthStateChanged(firebaseAuth, (currentUser) => {
     if (currentUser) {
@@ -70,7 +73,14 @@ export default React.memo(function Card({ movieData, isLiked = false }) {
                 <RiThumbUpFill title="Like" />
                 <RiThumbDownFill title="Dislike" />
                 {isLiked ? (
-                  <BsCheck title="Remove From List" />
+                  <BsCheck
+                    title="Remove From List"
+                    onClick={() =>
+                      dispatch(
+                        removeMovieFromLiked({ movieId: movieData.id, email })
+                      )
+                    }
+                  />
                 ) : (
                   <AiOutlinePlus title="Add to my list" onClick={addToList} />
                 )}
